@@ -1,0 +1,3749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot & Security Mentions Report 2025-08-25</title>
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --primary-dark: #2c3e50;
+            --secondary-color: #2ecc71;
+            --warning-color: #e74c3c;
+            --info-color: #f39c12;
+            --light-bg: #f5f5f5;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--light-bg);
+        }
+        
+        /* Enhanced Dashboard Header with improved contrast */
+        .dashboard-header {
+            background: linear-gradient(to right, #1a2a3a, #2980b9);
+            border-radius: var(--border-radius);
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            color: white;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .title-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .main-title {
+            font-size: 28px;
+            margin: 0;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            color: white; /* Ensure text is white for contrast */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Add shadow for better readability */
+        }
+        
+        .subtitle {
+            margin: 8px 0 0 0;
+            opacity: 0.95; /* Increased from 0.9 for better visibility */
+            font-size: 16px;
+            max-width: 600px;
+            color: white; /* Ensure text is white for contrast */
+        }
+        
+        .report-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            background-color: rgba(255, 255, 255, 0.15); /* Increased from 0.1 for better visibility */
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .meta-label {
+            font-weight: 500;
+            margin-right: 5px;
+            opacity: 0.9; /* Increased from 0.8 for better visibility */
+            color: white; /* Ensure text is white for contrast */
+        }
+        
+        .meta-value {
+            font-weight: 600; /* Added for better visibility */
+            color: white; /* Ensure text is white for contrast */
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px 30px;
+            margin-bottom: 20px;
+        }
+        
+        h1, h2, h3 {
+            color: var(--primary-dark);
+        }
+        
+        h1 {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            margin-top: 20px;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+        
+        /* Enhanced Stats Dashboard */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            border: 1px solid #f0f0f0;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .stat-card.primary {
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .stat-icon {
+            margin-right: 15px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stat-content {
+            flex: 1;
+        }
+        
+        .stat-heading {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+        }
+        
+        .stat-trend {
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #7f8c8d;
+        }
+        
+        .trend-up {
+            color: var(--warning-color);
+        }
+        
+        .trend-down {
+            color: var(--secondary-color);
+        }
+
+        /* Overview Container */
+        .overview-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .overview-container h3 {
+            color: var(--primary-dark);
+            margin-top: 0;
+            font-size: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .overview-container h4 {
+            color: #34495e;
+            margin: 20px 0 10px 0;
+            font-size: 17px;
+        }
+        
+        .overview-container p {
+            margin: 10px 0;
+            line-height: 1.7;
+            color: #444;
+        }
+        
+        .overview-container ul {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+        
+        .overview-container li {
+            margin-bottom: 8px;
+            color: #444;
+        }
+        
+        /* Critical Mentions Styling */
+        .critical-mention {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 18px;
+            margin: 20px 0;
+            border-left: 4px solid var(--warning-color);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .critical-mention h4 {
+            margin-top: 0;
+            color: var(--warning-color);
+            font-size: 17px;
+        }
+        
+        .critical-mention ul {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+        
+        .critical-mention .view-link {
+            display: inline-block;
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-top: 8px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .critical-mention .view-link:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+        
+        /* Source tabs styling */
+        .source-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .source-tab {
+            padding: 10px 15px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        
+        .source-tab:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .source-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .source-section {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .source-section.active {
+            display: block;
+        }
+        
+        .source-header {
+            padding: 12px 15px;
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #eee;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f6f8fa;
+            position: sticky;
+            top: 0;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+        
+        /* Source indicators */
+        .source {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+        
+        .source-x {
+            background-color: #dcf8ff;
+            color: #0081AF;
+        }
+        
+        .source-forum {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .source-reddit {
+            background-color: #fff0e6;
+            color: #ff4500;
+        }
+        
+        /* Social media embeds styling - enhanced */
+        .social-embed {
+            border: 1px solid #e1e8ed;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 15px 0;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .social-embed:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .twitter-embed {
+            border-left: 4px solid #1da1f2;
+        }
+        
+        .reddit-embed {
+            border-left: 4px solid #ff4500;
+        }
+        
+        .forum-embed {
+            border-left: 4px solid #ff6600;
+        }
+        
+        .embed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 10px;
+        }
+        
+        .source-name {
+            font-weight: bold;
+            color: #1565c0;
+        }
+        
+        .user-name {
+            font-style: italic;
+            color: #555;
+            margin-left: 8px;
+        }
+        
+        .post-date {
+            color: #657786;
+        }
+        
+        .embed-content {
+            font-size: 16px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            margin-bottom: 12px;
+            word-wrap: break-word;
+            padding: 5px 0;
+        }
+        
+        .embed-footer {
+            display: flex;
+            justify-content: flex-end;
+            border-top: 1px solid #eaeaea;
+            padding-top: 10px;
+        }
+        
+        .embed-footer a {
+            color: #1da1f2;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .embed-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Info panels */
+        .report-context {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+            padding: 15px 20px;
+            margin: 20px 0;
+            font-size: 0.9em;
+            color: #555;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .chart-info {
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            padding: 12px 15px;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #555;
+            border-left: 3px solid #ddd;
+        }
+        
+        .source-count {
+            background-color: #e3f2fd;
+            color: #1565c0;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 5px;
+            font-size: 0.8em;
+        }
+        
+        /* Keyword highlighting */
+        .highlight-bot {
+            background-color: rgba(255, 240, 157, 0.5);
+            padding: 1px 3px;
+            border-radius: 3px;
+        }
+        
+        .highlight-container {
+            display: flex;
+            margin: 0 0 10px 0;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .highlight-item {
+            display: inline-block;
+            background-color: #e3f2fd;
+            color: #1565c0;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+        }
+        
+        /* Reddit link styling */
+        .reddit-links {
+            display: flex;
+            margin-top: 10px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .reddit-link {
+            display: inline-block;
+            font-size: 0.85em;
+            color: #ff4500;
+            text-decoration: none;
+            padding: 3px 10px;
+            border: 1px solid #ff4500;
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+        
+        .reddit-link:hover {
+            background-color: #ff4500;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .date-generated {
+            font-size: 0.8em;
+            color: #777;
+            text-align: right;
+            margin-top: 30px;
+        }
+        
+        /* Mobile responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .dashboard-header {
+                padding: 15px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+            }
+            
+            .container {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+            }
+            
+            .stat-card {
+                min-width: 100%;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            
+            th, td {
+                padding: 8px 10px;
+            }
+            
+            .social-embed {
+                padding: 12px;
+            }
+            
+            .embed-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .post-date {
+                margin-top: 5px;
+            }
+            
+            .source-tab {
+                padding: 6px 10px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Enhanced Header Section with improved contrast -->
+    <div class="dashboard-header">
+        <div class="header-content">
+            <div class="title-section">
+                <h1 class="main-title">Bot & Security Mentions Report</h1>
+                <p class="subtitle">Analysis of bot, cheating, and security-related social media mentions across poker platforms</p>
+            </div>
+            <div class="report-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Report Date:</span>
+                    <span class="meta-value">2025-08-25</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Period:</span>
+                    <span class="meta-value">8 months</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Sources:</span>
+                    <span class="meta-value">4</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Enhanced Stats Dashboard -->
+        <div class="stats-container">
+            <div class="stat-card primary">
+                <div class="stat-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" d="M0 0h24v24H0z"/>
+                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-1-5h2v2h-2v-2zm0-8h2v6h-2V7z" fill="#3498db"/>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-heading">Bot-Related Mentions</div>
+                    <div class="stat-value">50</div>
+                    <div class="stat-trend trend-down">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+                            
+                            <path fill="none" d="M0 0h24v24H0z"/>
+                            <path d="M13 16.172l5.364-5.364 1.414 1.414L12 20l-7.778-7.778 1.414-1.414L11 16.172V4h2v12.172z" fill="currentColor"/>
+                            
+                        </svg>
+                        87.5% from previous month
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" d="M0 0h24v24H0z"/>
+                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" fill="#2ecc71"/>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-heading">Total Mentions</div>
+                    <div class="stat-value">40</div>
+                    <div class="stat-trend">
+                        10 recent from each source
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" d="M0 0h24v24H0z"/>
+                        <path d="M12 23a7.5 7.5 0 0 0 7.5-7.5c0-.866-.23-1.697-.5-2.47-1.667 1.647-2.933 2.47-3.8 2.47 3.995-7 1.8-10-4.2-14 .5 5-2.796 7.274-4.138 8.537A7.5 7.5 0 0 0 12 23z" fill="#f39c12"/>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-heading">Top Source</div>
+                    <div class="stat-value">ACR_POKER</div>
+                    <div class="stat-trend">
+                        44 mentions
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Weekly Summary Section -->
+        <div class="overview-container">
+            
+        <div class="overview-content">
+            <h3>Weekly Summary</h3>
+            <p>This week's data contains 20 total mentions of bot and security-related topics across 2 platforms. The majority of discussions (15 mentions) occurred on ACR_POKER, with 5 mentions on r/poker.</p>
+
+            <h4>Most Frequently Mentioned Topics</h4>
+            <ul>
+                <li>Bots: 18 mentions</li>
+<li>Collusion: 5 mentions</li>
+<li>Cheating: 3 mentions</li>
+<li>Financial: 2 mentions</li>
+<li>Security: 2 mentions</li>
+            </ul>
+
+            <h4>Source Analysis</h4>
+            <p>ACR_POKER, r/poker accounted for 75% of all mentions (15 of 20). r/poker had 5 mentions. The discussions primarily focused on bots, with some mentions of collusion, cheating.</p>
+            
+            
+                <h4>Quiet Sources</h4>
+                <p>The following sources have no flagged bot or security mentions in the current period: 
+                Forum_1, Forum_2.</p>
+                
+        </div>
+        
+        <h3>Top 3 Critical Mentions</h3>
+        
+            <h4><strong>Cheating Allegation</strong></h4>
+            <ul>
+                <li><em>Source:</em> r/poker</li>
+                <li><em>Issue:</em> ACR Banned My Account & Confiscated Funds I wanted to share my recent experience with ACR because...</li>
+                <li><a href="https://www.reddit.com/comments/1mddx0m" target="_blank" class="view-link">View Original Post</a></li>
+            </ul>
+            
+            <h4><strong>Collusion Concern</strong></h4>
+            <ul>
+                <li><em>Source:</em> ACR_POKER</li>
+                <li><em>Issue:</em> @BobbyMac_999 @MattBlagg @SATX_Poker @ClubWPTGold That happened on ACR. I’m saying @ClubWPTGold c...</li>
+                <li><a href="https://twitter.com/i/web/status/1947399664216772819" target="_blank" class="view-link">View Original Post</a></li>
+            </ul>
+            
+            <h4><strong>Collusion Concern</strong></h4>
+            <ul>
+                <li><em>Source:</em> ACR_POKER</li>
+                <li><em>Issue:</em> @BobbyMac_999 @MattBlagg @SATX_Poker @ClubWPTGold They’re claiming they got the tools to stop bot...</li>
+                <li><a href="https://twitter.com/i/web/status/1947355781524832399" target="_blank" class="view-link">View Original Post</a></li>
+            </ul>
+            
+        <div class="report-context">
+            <p><strong>Note:</strong> This report shows mentions containing keywords related to bots, cheating, collusion and security. 
+            It represents a filtered selection of social media activity that may require attention or review, not all platform discussions.</p>
+        </div>
+        
+        <h3>Top 3 Critical Mentions</h3>
+        
+            <h4><strong>Cheating Allegation</strong></h4>
+            <ul>
+                <li><em>Source:</em> r/poker</li>
+                <li><em>Issue:</em> ACR Banned My Account & Confiscated Funds I wanted to share my recent experience with ACR because...</li>
+                <li><a href="https://www.reddit.com/comments/1mddx0m" target="_blank" class="view-link">View Original Post</a></li>
+            </ul>
+            
+            <h4><strong>Collusion Concern</strong></h4>
+            <ul>
+                <li><em>Source:</em> ACR_POKER</li>
+                <li><em>Issue:</em> @BobbyMac_999 @MattBlagg @SATX_Poker @ClubWPTGold That happened on ACR. I’m saying @ClubWPTGold c...</li>
+                <li><a href="https://twitter.com/i/web/status/1947399664216772819" target="_blank" class="view-link">View Original Post</a></li>
+            </ul>
+            
+            <h4><strong>Collusion Concern</strong></h4>
+            <ul>
+                <li><em>Source:</em> ACR_POKER</li>
+                <li><em>Issue:</em> @BobbyMac_999 @MattBlagg @SATX_Poker @ClubWPTGold They’re claiming they got the tools to stop bot...</li>
+                <li><a href="https://twitter.com/i/web/status/1947355781524832399" target="_blank" class="view-link">View Original Post</a></li>
+            </ul>
+            
+    <div class="report-context">
+        <p><strong>Note:</strong> This report shows mentions containing keywords related to bots, cheating, collusion and security. 
+        It represents a filtered selection of social media activity that may require attention or review, not all platform discussions.</p>
+    </div>
+    
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2>Bot & Security Mentions Trend</h2>
+        <div class="chart-container">
+            <canvas id="botMentionsChart"></canvas>
+        </div>
+        <div class="chart-info">
+            <p>This chart shows mentions containing bot, cheating, or security keywords over time, broken down by source.</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2>Recent Bot-Related Mentions</h2>
+        
+        <!-- Source tabs with added Reddit tab even if empty -->
+        <div class="source-tabs">
+            <div class="source-tab active" data-source="all">All Sources <span class="source-count">50</span></div>
+            
+            
+            <div class="source-tab" data-source="r/poker">r/poker <span class="source-count">6</span></div>
+            
+            <div class="source-tab" data-source="ACR_POKER">ACR_POKER <span class="source-count">44</span></div>
+            
+            <div class="source-tab" data-source="Reddit">Reddit <span class="source-count">0</span></div>
+            
+        </div>
+        
+        <!-- All sources section -->
+        <div class="source-section active" id="source-all">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Source</th>
+                        <th>Content</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td>9 Aug 2025 23:09</td>
+                        <td>
+                            <span class="source source-reddit">
+                                r/poker
+                            </span>
+                            
+                            
+                            <a href="https://www.reddit.com/comments/1mm31l6" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed reddit-embed">
+                    <div class="embed-header">
+                        <span class="source-name">r/r/poker</span>
+                        <span class="user-name">u/altermeonline</span>
+                        <span class="post-date">Aug 09, 2025 23:09</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">(Rant) This is why online poker sucks so bad. First - I am the exact kind of player you want playing, all of you. I enjoy the game, I am not a gto wiz, a degenerate, just a guy who likes the game, and has enough extra cash to come fuck around once in a while. I am probably gonna play for 2 hours, win or lose a couple hundred and be back next week. Theres a lot of us like me. I used to play online many years ago, I opened an acr account ( im in California with no convenient rooms nearby) but I soon had a bad experience with them, closed my acct and swore off online poker. Last week I was like you know what, its been a while, Im sure its gotten better, right, right? Nope I saw ClubWPTGold online, didnt read too many bad stuff about it, and decided ok lets see what happens. I would love to find a place to play once in a while, yeah I know <span class="highlight-bot">bots</span> and all that, I dont really careIm not playing with money I cant afford to torch. Just some stress relief man. Anyway, you can read the screenshots. I went through like 50 steps, none ever asked for an email or password. I didnt even think about it because it took me way too long just to upload my id, verify my debit card, etc. Its now been no response for close to a week, in email or dm. I dont even give a fuck about the $50 Im out (cashed for $30 and deposited $20) I did the smallest amount just in case. I was right, and online poker is still a complete shit show. I know they wont shed a tear for me, but its just so goddamn infuriating that these are the experiences we have to put up with. TLDR: ClubWPT is a mess, let me deposit and play without asking for an email or password. Now ghosting.just ranting.</div>
+                    <div class="embed-footer">
+                        <a href="https://www.reddit.com/comments/1mm31l6" target="_blank" class="view-link">View on Reddit</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>7 Aug 2025 01:03</td>
+                        <td>
+                            <span class="source source-reddit">
+                                r/poker
+                            </span>
+                            
+                            
+                            <a href="https://www.reddit.com/comments/1mjmdiz" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed reddit-embed">
+                    <div class="embed-header">
+                        <span class="source-name">r/r/poker</span>
+                        <span class="user-name">u/10J18R1A</span>
+                        <span class="post-date">Aug 07, 2025 01:03</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">BetRivers PA Poker I mostly play on ACR (which is I, Robot all over the place) and PokerStars PA (which barely has any volume.) I'm thinking about tossing a few dollars on BetRivers since it's available in Delaware, but outside of a year old 2+2 thread, can't really find any user reviews or testimonials. If anybody is on this site, what are you basic thoughts (geolocation, <span class="highlight-bot">bot</span> detection, PT4 access, volume, variety, etc.)</div>
+                    <div class="embed-footer">
+                        <a href="https://www.reddit.com/comments/1mjmdiz" target="_blank" class="view-link">View on Reddit</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1 Aug 2025 21:03</td>
+                        <td>
+                            <span class="source source-reddit">
+                                r/poker
+                            </span>
+                            
+                            
+                            <a href="https://www.reddit.com/comments/1mf87te" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed reddit-embed">
+                    <div class="embed-header">
+                        <span class="source-name">r/r/poker</span>
+                        <span class="user-name">u/Appropriate_Joke_490</span>
+                        <span class="post-date">Aug 01, 2025 21:03</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">Are there websites known to be rigged? (Srs) Ultimate Bet and ACR are two websites that have had superUsers and third party poker <span class="highlight-bot">bots</span>, respectively. What exactly makes it safe to say that ACR or other websites dont control the poker <span class="highlight-bot">bots</span>, super users, or rig their own website? I know that you can make arguments like, they dont need to rig their website to win since they can simply rake you, but in real life, some people are extremely greedy I know some websites have been audited to prove their card shuffling is guaranteed to be random, but lol if they comply with this yet they hide superusers themselves. Who exactly is making sure they arent?</div>
+                    <div class="embed-footer">
+                        <a href="https://www.reddit.com/comments/1mf87te" target="_blank" class="view-link">View on Reddit</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>30 Jul 2025 18:09</td>
+                        <td>
+                            <span class="source source-reddit">
+                                r/poker
+                            </span>
+                            
+                            
+                            <a href="https://www.reddit.com/comments/1mddx0m" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed reddit-embed">
+                    <div class="embed-header">
+                        <span class="source-name">r/r/poker</span>
+                        <span class="user-name">u/stonercenter</span>
+                        <span class="post-date">Jul 30, 2025 18:09</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span><span class="highlight-item">cheating</span></div>
+                    <div class="embed-content">ACR Banned My Account & Confiscated Funds I wanted to share my recent experience with ACR because Im at a complete loss. My account was permanently closed and all my funds confiscated. I appealed the decision multiple times, asking for specific information about what I was accused of. The only replies I got were copy-pasted decisions are final emails. To make matters worse, in the last email they even started it with **Hello Bruce** which isnt my name. Bruce is actually the name of the agent who signed the email! I signed my name at the end of every message, so this mistake just shows how little care these appeals get. I have never knowingly violated ACRs terms and conditions. I dont use <span class="highlight-bot">bots</span>, RTA, seating scripts, or any prohibited tools. I asked them to at least clarify what triggered the ban so I could understand, but they refuse to share any details. I fully support poker sites taking strong action against <span class="highlight-bot">cheating</span>, but there has to be transparency. Right now, ACR can confiscate anyones bankroll without explanation, hide behind final decisions, and theres nothing players can do. **Has anyone here gone through something similar and actually recovered their funds?** Are there contacts at ACR who will actually review cases properly? Any help or advice would be appreciated. https://preview.redd.it/c0re5yi5y1gf1.png?width=886&format=png&auto=webp&s=9e30137c55dc7c8ba8791fe1ff68caa9e2722dcd https://preview.redd.it/5c3mlc03y1gf1.png?width=915&format=png&auto=webp&s=e2502e6278326cd7892c803e6e0257dfc6dbbf6a</div>
+                    <div class="embed-footer">
+                        <a href="https://www.reddit.com/comments/1mddx0m" target="_blank" class="view-link">View on Reddit</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21 Jul 2025 20:53</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1947399664216772819" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 21, 2025 20:53</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span><span class="highlight-item">collusion</span></div>
+                    <div class="embed-content">@BobbyMac_999 @MattBlagg @SATX_Poker @ClubWPTGold That happened on ACR. I’m saying @ClubWPTGold claims to detect <span class="highlight-bot">collusion</span>, RTA and <span class="highlight-bot">bots</span>. I believe they are doing well. Although I have many unrelated suggestions like hand for hand play before final tables. I keep going to final tables to check if they updated it, still haven’t</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1947399664216772819" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21 Jul 2025 17:59</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1947355781524832399" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 21, 2025 17:59</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span><span class="highlight-item">collusion</span></div>
+                    <div class="embed-content">@BobbyMac_999 @MattBlagg @SATX_Poker @ClubWPTGold They’re claiming they got the tools to stop <span class="highlight-bot">bots</span>, <span class="highlight-bot">collusion</span> and RTA. Can’t believe you won on ACR, that’s the site I lost the most on.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1947355781524832399" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21 Jul 2025 16:35</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1947334717516263573" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 21, 2025 16:35</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span><span class="highlight-item">collusion</span></div>
+                    <div class="embed-content">@MCF1413011 @MattBlagg @SATX_Poker @ClubWPTGold I was a winning player on ACR and I’m not results oriented. I understand variance very well. Been playing online and live for over 20 years. The site is riddled with <span class="highlight-bot">bots</span>, <span class="highlight-bot">collusion</span> and rta. That’s really not even up for debate. If you’re happy on there that’s cool I’m just not.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1947334717516263573" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21 Jul 2025 03:48</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1947141636003422321" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 21, 2025 03:48</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ICuRaRook @ACR_POKER I love that you tag the Russians. I do the same because I see bizarre things. Normally fold and let the big stack bust the shorty. However, against two Russian <span class="highlight-bot">bots</span>, the opener will fold to dump to the other Russian.  If you shove of course they’ll have Aces. Prob shove anyway.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1947141636003422321" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>19 Jul 2025 05:09</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1946437202071674989" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 19, 2025 05:09</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span><span class="highlight-item">collusion</span></div>
+                    <div class="embed-content">@EricMizrachi @TheGrinder44 @GGPoker @WPT @ACR_POKER @PokerStars Whichever he thinks is hardest on <span class="highlight-bot">bots</span> and <span class="highlight-bot">collusion</span>.
+
+Rake matters too, but arguably a distant second.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1946437202071674989" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17 Jul 2025 15:39</td>
+                        <td>
+                            <span class="source source-reddit">
+                                r/poker
+                            </span>
+                            
+                            
+                            <a href="https://www.reddit.com/comments/1m2auov" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed reddit-embed">
+                    <div class="embed-header">
+                        <span class="source-name">r/r/poker</span>
+                        <span class="user-name">u/TheTalkingFred</span>
+                        <span class="post-date">Jul 17, 2025 15:39</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">collusion</span><span class="highlight-item">cheating</span></div>
+                    <div class="embed-content">Any reason not to use ReShuffle tables? If not for nefarious <span class="highlight-bot">cheating</span> purposes, why are players opting to sit at regular tables vs tables that use the reshuffle feature to make <span class="highlight-bot">collusion</span> more challenging? Shouldn't the defacto be try and sit at a reshuffle table unless there aren't any open? Yet they seem to be the rarity as oppose to the norm, on ACR at least. Sometimes I'll sit on a reshuffle table waiting for action, and someone will open up the same variant but not reshuffle and a game will start there..</div>
+                    <div class="embed-footer">
+                        <a href="https://www.reddit.com/comments/1m2auov" target="_blank" class="view-link">View on Reddit</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>15 Jul 2025 19:05</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1945198017226703069" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 15, 2025 19:05</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER  check on the stupid <span class="highlight-bot">bots</span> you have all over your site!!</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1945198017226703069" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>14 Jul 2025 01:50</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1944575270188700025" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 14, 2025 01:50</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@WSOP Today not watching....I was until Kassouf got eliminated but if I wanted to watch a bunch of <span class="highlight-bot">bots</span> play poker with 0 table talk I'll watch the ACR venom online</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1944575270188700025" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13 Jul 2025 02:31</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1944223132362960904" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 13, 2025 02:31</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">secure</span></div>
+                    <div class="embed-content">🎉 Attention Brazilian Poker Players! 🇧🇷
+Great news ... PIX is now available as a deposit option on ACR!
+
+Enjoy faster, easier, and more <span class="highlight-bot">secure</span> deposits using Brazil's favorite payment method.
+
+Start playing with PIX today! 
+https://t.co/9J9OX2khEW https://t.co/MwQzmLoTrD</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1944223132362960904" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6 Jul 2025 04:57</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1941723271428264300" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 06, 2025 04:57</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">The @WPN_CEO (Phil Nagy) refuses to answer why he would be "screwing <span class="highlight-bot">bots</span>" instead of banning them from his site. He refuses to answer how he is differentiating <span class="highlight-bot">bots</span> from humans. #WSOP2025 #WSOP #ACR #pokerface #pokerguadavegas #onlinepoker #pokeronline #poker #YOUarebeingCHEATED https://t.co/9ESr0BRmdz</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1941723271428264300" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5 Jul 2025 20:49</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1941600418116599972" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 05, 2025 20:49</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@igopoopyy @ACR_POKER are ypu a <span class="highlight-bot">BOT</span>?</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1941600418116599972" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5 Jul 2025 17:03</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1941543426199257235" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 05, 2025 17:03</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@ACR_POKER You guys are getting a little out of hand with sending me test questions to see if I am a <span class="highlight-bot">bot</span>. Every time you do it I am on 12 tables it, I run out of time on some tables and it ruins my thinking on other tables from the disruption. How many times do I have to say I am not a <span class="highlight-bot">bot</span>?</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1941543426199257235" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5 Jul 2025 15:54</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1941526167636632045" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 05, 2025 15:54</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@CryptoDustLA @ACR_POKER 🧠 Neural Matrix swarm &gt; solo <span class="highlight-bot">bots</span>. Collective intelligence? Web3’s edge. Bet on brains. 🧠  
+https://t.co/yCt0dC77l0</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1941526167636632045" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5 Jul 2025 00:33</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1941294274127200400" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 05, 2025 00:33</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER is probably by far the worst unsafe site you could possibly play on.  Nothing about how they conduct safety of the players nor their own cybersecurity is legitimate or safe.  Their RNG is proven to be fraudulent and pointed towards theirs <span class="highlight-bot">bots</span> and their regs.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1941294274127200400" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4 Jul 2025 03:49</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1940981337042870502" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 04, 2025 03:49</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER has so many <span class="highlight-bot">bots</span> running in any Holdem cash table it’s disgusting. Someone needs to shut this website down. How can this even happen in 2025. Shame on them</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1940981337042870502" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2 Jul 2025 09:39</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1940344558287749472" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 02, 2025 09:39</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@JonathanLittle @PhilGalfond @bbzstables @KevinRabichow
+How do you keep quiet about @ACR_POKER?
+<span class="highlight-bot">Bot</span> rings. Rigged spots. Solver-perfect unknowns.
+If this happened live, we’d call the floor.
+But online we shrug?
+The silence is betrayal.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1940344558287749472" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2 Jul 2025 09:39</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1940344492835663994" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 02, 2025 09:39</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@Joeingram1 @DougPolkVids @PokerLifePod @Berkey11
+You built platforms by calling out poker bullshit.
+Here’s mine: @ACR_POKER is rigged.
+I’ve played 100k+ hands. The <span class="highlight-bot">bots</span>, solver plays, outcome folds — it’s not variance. It’s theft.
+Do you care, or just talk tough?</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1940344492835663994" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>29 Jun 2025 18:02</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1939383908224975168" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 29, 2025 18:02</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@ACR_POKER yesterday in the $22 qualifier they give me QQ I open to 3 blinds and the utg raises me to over 25 blinds I call for a pot of 54 blinds and surprise the villain had 68of on the flop he flops me 6-10-8 incredible as if I was a <span class="highlight-bot">bot</span> of the system, I knew it was coming, I was out https://t.co/47cfDKaniR</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1939383908224975168" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>27 Jun 2025 23:20</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1938739137772953983" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 27, 2025 23:20</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER Let’s giveaway to show how fucked up our business really is cause if we didn’t we’d go broke but hey at least the <span class="highlight-bot">bots</span> can help keep you funded</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1938739137772953983" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>27 Jun 2025 19:37</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1938683109773652138" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 27, 2025 19:37</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@RobKuhn_ @Solverapproved @J0HNWEST3 @dankness3 Could you confidently say acr is relatively clean of <span class="highlight-bot">bots</span> and rta? Maybe I’m delusional and  Nagy seems like a loose cannon but feel you guys are good for poker overall.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1938683109773652138" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>26 Jun 2025 06:52</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1938128263353929936" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 26, 2025 06:52</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@RobKuhn_ Poker players have had to police sites and do the securities work for them since the history of the game. Marco Johnson uncovered absolute poker, the high stakes community discovered the acr 10m <span class="highlight-bot">bot</span> scandal, the high stakes community discovered the gg super user scandal. Combined</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1938128263353929936" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>22 Jun 2025 02:38</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1936614702823748072" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 22, 2025 02:38</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@ACR_POKER I really trusted this site until they showed me I couldn’t. So disappointing… I would return to play if they would fix the <span class="highlight-bot">bot</span> &amp; collision problems. They’ve got the absolute best platform by far… Just have to prove we can trust you…</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1936614702823748072" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20 Jun 2025 23:33</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1936205742685495423" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 20, 2025 23:33</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@PaulGobertJr @ACR_POKER @BRADONTECH_R on twitter is the best help to recover your account in few minutes because he helped me out days ago while I was messaging the Acr poker support team for weeks and all they sent to me was <span class="highlight-bot">bot</span> replies so go check him up to avoid time wasting</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1936205742685495423" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20 Jun 2025 22:56</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1936196474305483254" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 20, 2025 22:56</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span><span class="highlight-item">security</span><span class="highlight-item">cheats</span></div>
+                    <div class="embed-content">@CMONEYMAKER @ACR_POKER Yes go on a site with no <span class="highlight-bot">security</span>, <span class="highlight-bot">bots</span>, teams and <span class="highlight-bot">cheats</span>, you might win, but probably not...</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1936196474305483254" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20 Jun 2025 18:34</td>
+                        <td>
+                            <span class="source source-reddit">
+                                r/poker
+                            </span>
+                            
+                            
+                            <a href="https://www.reddit.com/comments/1lgbg7x" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed reddit-embed">
+                    <div class="embed-header">
+                        <span class="source-name">r/r/poker</span>
+                        <span class="user-name">u/Single-Guava-4018</span>
+                        <span class="post-date">Jun 20, 2025 18:34</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">GG poker Beware (must read) I would advise anybody from playing on this site. The first couple years it'll be all roses but as soon as they've got you hooked that when they take it all away. I am a winning poker player at my local casino. I have four years of evidence to prove this. Then let's discuss online poker on sites like gg Six months into it the bad run I thought OK that's normal. It's variance yeah we are a year and a half later still the same shit over and over again massive massive hands near the money and get cooler time and time again and I'm not talking normal coolers I'm getting pocket KK cracked by 94 off suit. If the player has you covered, you can pretty much say good night the most ridiculous shit I've ever seen here. Here's an example. We all in massive massive pot 700 big blinds. I had AK suited against pocket 99 and pocket 10 then the big blind makes the call with 62 suited for 150bbs covering everyone can u guess the flop 3-5-4 rainbow it wasn't even a bounty tournament. This player had 1.5 million in winnings one of their many <span class="highlight-bot">bots</span> on this site most fraudulent shit I've ever seen aggressive RNG make sure everybody's all in by the turn And don't even get me started on they're all in or fold. I'm convinced 2/3 players playing all in or fold are <span class="highlight-bot">bots</span>. Coolers are even worse there I'm 2/78 for winning hands playing all in or fold And these aren't low steaks these are over $100 buy in tournaments. Blows my mind how they can keep getting away with this. If anybody thinks I'm making this up, I'll refer you to the $10,000 final table cooler that shows that as long as u got the person covered the board will run out in your favor Evgenii Akimov shoves 64 off suit right into pocket kings u can guess the runout 64 made a straight lol Few hands later same thing same thing 64 off shoves into Ak off. 64 makes the runner runner flush. This was for $600,000 and $800,000 pay jumps pretty obvious the player with the 64 both times can see the boards before they run out. Once I can see, twice with 64 off with that much money on the line. Random RNG they say if that shit is random I am Taylor Swifts sister. I just hope there's a class action lawsuit in the near future. Anyways, do not make an account on this site. It's in your best interest.</div>
+                    <div class="embed-footer">
+                        <a href="https://www.reddit.com/comments/1lgbg7x" target="_blank" class="view-link">View on Reddit</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20 Jun 2025 09:40</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1935996129457340671" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 20, 2025 09:40</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span><span class="highlight-item">security</span></div>
+                    <div class="embed-content">@B_moneysPix @CMONEYMAKER @ACR_POKER You're absolutely right. There's no <span class="highlight-bot">security</span>, and it's full of <span class="highlight-bot">bots</span>. That page won't exist in a year or two. He'll jump ship because he's worth a lot to stand up for these people.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1935996129457340671" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>14 Jun 2025 08:15</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1933800513855975737" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 14, 2025 08:15</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">It’s hard enough fading the <span class="highlight-bot">bots</span> on @ACR_POKER  but to also fade the rng that favors the chip stack?!?
+
+The fact I can manage final table is amazing to me 
+@ACR_POKER you’re getting there just do better</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1933800513855975737" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 22:54</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1933296784417140957" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 22:54</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER NEED TO GET RID OF ALL THE <span class="highlight-bot">BOTS</span> 🤖</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1933296784417140957" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 22:16</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1933287343773134974" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 22:16</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER How about deleting all the <span class="highlight-bot">bots</span>? Is that in the works or nag?</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1933287343773134974" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 15:39</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1933187527709467096" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 15:39</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER Fix the <span class="highlight-bot">bots</span> bra</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1933187527709467096" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 12:54</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1933145946335973735" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 12:54</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@IT5PAYDAY @ACR_POKER This was the cherry on top, all the info is in the replayer. This was the 4th suspicious thing done. I openfold 93. The suspected malfunctioned <span class="highlight-bot">bot</span> is sb. No "maybe misclicked"  when other hands they 3.5x pre then folded to 7bb(total) jams in a pko
+
+https://t.co/BPJSEukPA9</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1933145946335973735" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 12:39</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1933142059524792533" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 12:39</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER Are AI <span class="highlight-bot">bots</span> allowed to participate in the tournament?  😎</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1933142059524792533" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 11:33</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1933125458104914054" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 11:33</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER You should see how to eliminate the <span class="highlight-bot">bots</span> on your fucking site instead of playing. It’s a joke over there.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1933125458104914054" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 05:56</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1933040573075583302" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 05:56</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@ACR_POKER I sent in a report on May 21st where on a ft of a pko a player(chipleader) raised 3.5bb and folded to a 6-7bb total reshove while closing on 3 different hands. Then 3 handed, check/called river with the nuts. I think malfunctioned <span class="highlight-bot">bot</span>. Player still grinding. I lost faith Phil</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1933040573075583302" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 04:49</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1933023888025530666" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 04:49</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span><span class="highlight-item">colluders</span></div>
+                    <div class="embed-content">@ACR_POKER How many <span class="highlight-bot">bots</span> and <span class="highlight-bot">colluders</span> have you banned in 2025?</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1933023888025530666" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 03:00</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932996370673381426" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 03:00</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER Against you ……and a few hundred Russian <span class="highlight-bot">bots</span>.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932996370673381426" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 00:42</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932961788406178091" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 00:42</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@ACR_POKER I <span class="highlight-bot">bot</span> ACR daily for months.  I too love poker and love ACR! What a coincidence!
+
+Thanks for doing absolutely nothing to stop me, as if GTO wizard had literally anything to do with it 😂 😂 😂.
+
+😂 ☠️ Fucking moron.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932961788406178091" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11 Jun 2025 22:58</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932935555618386009" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 11, 2025 22:58</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER Game integrity? You literally allowed <span class="highlight-bot">bots</span> to steal over 10 mill from your customers.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932935555618386009" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11 Jun 2025 21:42</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932916290722656422" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 11, 2025 21:42</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER Sus owners says run it: your <span class="highlight-bot">bots</span> vs my backend and my <span class="highlight-bot">bots</span>. This is so brazen, hard to feel bad for anyone who plays.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932916290722656422" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11 Jun 2025 21:40</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932915831291457932" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 11, 2025 21:40</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@BigKuntryHateU @ACR_POKER It’s ACR…. Everyone’s Russian <span class="highlight-bot">bot</span> farm is allowed!</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932915831291457932" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11 Jun 2025 21:37</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932915138274697620" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 11, 2025 21:37</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@ACR_POKER Luckily I couldn’t possibly have a lower opinion of ACR than I already do or this post would make me puke. “Game integrity is everything to us” what a joke. You run the shadiest site in the poker industry and that’s really saying something. Maybe do another <span class="highlight-bot">bot</span> challenge 🤣. FAIL</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932915138274697620" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11 Jun 2025 21:33</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932914151279751500" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 11, 2025 21:33</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@baseballking452 @ACR_POKER <span class="highlight-bot">Bot</span> 1 <span class="highlight-bot">bot</span> 2 <span class="highlight-bot">bot</span> 3</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932914151279751500" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11 Jun 2025 20:50</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932903370005602735" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 11, 2025 20:50</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER how about just use that money to get rid of the Eastern Euro <span class="highlight-bot">bots</span> on you network? Unless they are paying you a cut of the profits?</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932903370005602735" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11 Jun 2025 20:43</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932901438256042487" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 11, 2025 20:43</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@ACR_POKER Is my Russian <span class="highlight-bot">bot</span> farm allowed?</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932901438256042487" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11 Jun 2025 18:47</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932872248584790399" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 11, 2025 18:47</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER Entry?  Will @wugwugwugwug be able to watch and monitor for <span class="highlight-bot">bots</span> and teams?</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932872248584790399" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>10 Jun 2025 20:24</td>
+                        <td>
+                            <span class="source source-x">
+                                ACR_POKER
+                            </span>
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932534245743878264" target="_blank" class="view-link">View</a>
+                            
+                            
+                        </td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 10, 2025 20:24</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">cheats</span><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">A year and half later and @ACR_POKER is still full of Eastern European/russian scamming teams. It’s all a scam and act don’t care as long as their seats are getting filled, even if it is with <span class="highlight-bot">bot</span> rings of scammers and <span class="highlight-bot">cheats</span> https://t.co/R7Y5r6ziyH</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932534245743878264" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Individual source sections including Reddit with links -->
+        
+        <div class="source-section" id="source-r/poker">
+            <div class="source-header">r/poker</div>
+            
+            
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Content</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td>9 Aug 2025 23:09</td>
+                        <td>
+                            
+                <div class="social-embed reddit-embed">
+                    <div class="embed-header">
+                        <span class="source-name">r/r/poker</span>
+                        <span class="user-name">u/altermeonline</span>
+                        <span class="post-date">Aug 09, 2025 23:09</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">(Rant) This is why online poker sucks so bad. First - I am the exact kind of player you want playing, all of you. I enjoy the game, I am not a gto wiz, a degenerate, just a guy who likes the game, and has enough extra cash to come fuck around once in a while. I am probably gonna play for 2 hours, win or lose a couple hundred and be back next week. Theres a lot of us like me. I used to play online many years ago, I opened an acr account ( im in California with no convenient rooms nearby) but I soon had a bad experience with them, closed my acct and swore off online poker. Last week I was like you know what, its been a while, Im sure its gotten better, right, right? Nope I saw ClubWPTGold online, didnt read too many bad stuff about it, and decided ok lets see what happens. I would love to find a place to play once in a while, yeah I know <span class="highlight-bot">bots</span> and all that, I dont really careIm not playing with money I cant afford to torch. Just some stress relief man. Anyway, you can read the screenshots. I went through like 50 steps, none ever asked for an email or password. I didnt even think about it because it took me way too long just to upload my id, verify my debit card, etc. Its now been no response for close to a week, in email or dm. I dont even give a fuck about the $50 Im out (cashed for $30 and deposited $20) I did the smallest amount just in case. I was right, and online poker is still a complete shit show. I know they wont shed a tear for me, but its just so goddamn infuriating that these are the experiences we have to put up with. TLDR: ClubWPT is a mess, let me deposit and play without asking for an email or password. Now ghosting.just ranting.</div>
+                    <div class="embed-footer">
+                        <a href="https://www.reddit.com/comments/1mm31l6" target="_blank" class="view-link">View on Reddit</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://www.reddit.com/comments/1mm31l6" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>7 Aug 2025 01:03</td>
+                        <td>
+                            
+                <div class="social-embed reddit-embed">
+                    <div class="embed-header">
+                        <span class="source-name">r/r/poker</span>
+                        <span class="user-name">u/10J18R1A</span>
+                        <span class="post-date">Aug 07, 2025 01:03</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">BetRivers PA Poker I mostly play on ACR (which is I, Robot all over the place) and PokerStars PA (which barely has any volume.) I'm thinking about tossing a few dollars on BetRivers since it's available in Delaware, but outside of a year old 2+2 thread, can't really find any user reviews or testimonials. If anybody is on this site, what are you basic thoughts (geolocation, <span class="highlight-bot">bot</span> detection, PT4 access, volume, variety, etc.)</div>
+                    <div class="embed-footer">
+                        <a href="https://www.reddit.com/comments/1mjmdiz" target="_blank" class="view-link">View on Reddit</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://www.reddit.com/comments/1mjmdiz" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1 Aug 2025 21:03</td>
+                        <td>
+                            
+                <div class="social-embed reddit-embed">
+                    <div class="embed-header">
+                        <span class="source-name">r/r/poker</span>
+                        <span class="user-name">u/Appropriate_Joke_490</span>
+                        <span class="post-date">Aug 01, 2025 21:03</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">Are there websites known to be rigged? (Srs) Ultimate Bet and ACR are two websites that have had superUsers and third party poker <span class="highlight-bot">bots</span>, respectively. What exactly makes it safe to say that ACR or other websites dont control the poker <span class="highlight-bot">bots</span>, super users, or rig their own website? I know that you can make arguments like, they dont need to rig their website to win since they can simply rake you, but in real life, some people are extremely greedy I know some websites have been audited to prove their card shuffling is guaranteed to be random, but lol if they comply with this yet they hide superusers themselves. Who exactly is making sure they arent?</div>
+                    <div class="embed-footer">
+                        <a href="https://www.reddit.com/comments/1mf87te" target="_blank" class="view-link">View on Reddit</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://www.reddit.com/comments/1mf87te" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>30 Jul 2025 18:09</td>
+                        <td>
+                            
+                <div class="social-embed reddit-embed">
+                    <div class="embed-header">
+                        <span class="source-name">r/r/poker</span>
+                        <span class="user-name">u/stonercenter</span>
+                        <span class="post-date">Jul 30, 2025 18:09</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span><span class="highlight-item">cheating</span></div>
+                    <div class="embed-content">ACR Banned My Account & Confiscated Funds I wanted to share my recent experience with ACR because Im at a complete loss. My account was permanently closed and all my funds confiscated. I appealed the decision multiple times, asking for specific information about what I was accused of. The only replies I got were copy-pasted decisions are final emails. To make matters worse, in the last email they even started it with **Hello Bruce** which isnt my name. Bruce is actually the name of the agent who signed the email! I signed my name at the end of every message, so this mistake just shows how little care these appeals get. I have never knowingly violated ACRs terms and conditions. I dont use <span class="highlight-bot">bots</span>, RTA, seating scripts, or any prohibited tools. I asked them to at least clarify what triggered the ban so I could understand, but they refuse to share any details. I fully support poker sites taking strong action against <span class="highlight-bot">cheating</span>, but there has to be transparency. Right now, ACR can confiscate anyones bankroll without explanation, hide behind final decisions, and theres nothing players can do. **Has anyone here gone through something similar and actually recovered their funds?** Are there contacts at ACR who will actually review cases properly? Any help or advice would be appreciated. https://preview.redd.it/c0re5yi5y1gf1.png?width=886&format=png&auto=webp&s=9e30137c55dc7c8ba8791fe1ff68caa9e2722dcd https://preview.redd.it/5c3mlc03y1gf1.png?width=915&format=png&auto=webp&s=e2502e6278326cd7892c803e6e0257dfc6dbbf6a</div>
+                    <div class="embed-footer">
+                        <a href="https://www.reddit.com/comments/1mddx0m" target="_blank" class="view-link">View on Reddit</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://www.reddit.com/comments/1mddx0m" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17 Jul 2025 15:39</td>
+                        <td>
+                            
+                <div class="social-embed reddit-embed">
+                    <div class="embed-header">
+                        <span class="source-name">r/r/poker</span>
+                        <span class="user-name">u/TheTalkingFred</span>
+                        <span class="post-date">Jul 17, 2025 15:39</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">collusion</span><span class="highlight-item">cheating</span></div>
+                    <div class="embed-content">Any reason not to use ReShuffle tables? If not for nefarious <span class="highlight-bot">cheating</span> purposes, why are players opting to sit at regular tables vs tables that use the reshuffle feature to make <span class="highlight-bot">collusion</span> more challenging? Shouldn't the defacto be try and sit at a reshuffle table unless there aren't any open? Yet they seem to be the rarity as oppose to the norm, on ACR at least. Sometimes I'll sit on a reshuffle table waiting for action, and someone will open up the same variant but not reshuffle and a game will start there..</div>
+                    <div class="embed-footer">
+                        <a href="https://www.reddit.com/comments/1m2auov" target="_blank" class="view-link">View on Reddit</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://www.reddit.com/comments/1m2auov" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20 Jun 2025 18:34</td>
+                        <td>
+                            
+                <div class="social-embed reddit-embed">
+                    <div class="embed-header">
+                        <span class="source-name">r/r/poker</span>
+                        <span class="user-name">u/Single-Guava-4018</span>
+                        <span class="post-date">Jun 20, 2025 18:34</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">GG poker Beware (must read) I would advise anybody from playing on this site. The first couple years it'll be all roses but as soon as they've got you hooked that when they take it all away. I am a winning poker player at my local casino. I have four years of evidence to prove this. Then let's discuss online poker on sites like gg Six months into it the bad run I thought OK that's normal. It's variance yeah we are a year and a half later still the same shit over and over again massive massive hands near the money and get cooler time and time again and I'm not talking normal coolers I'm getting pocket KK cracked by 94 off suit. If the player has you covered, you can pretty much say good night the most ridiculous shit I've ever seen here. Here's an example. We all in massive massive pot 700 big blinds. I had AK suited against pocket 99 and pocket 10 then the big blind makes the call with 62 suited for 150bbs covering everyone can u guess the flop 3-5-4 rainbow it wasn't even a bounty tournament. This player had 1.5 million in winnings one of their many <span class="highlight-bot">bots</span> on this site most fraudulent shit I've ever seen aggressive RNG make sure everybody's all in by the turn And don't even get me started on they're all in or fold. I'm convinced 2/3 players playing all in or fold are <span class="highlight-bot">bots</span>. Coolers are even worse there I'm 2/78 for winning hands playing all in or fold And these aren't low steaks these are over $100 buy in tournaments. Blows my mind how they can keep getting away with this. If anybody thinks I'm making this up, I'll refer you to the $10,000 final table cooler that shows that as long as u got the person covered the board will run out in your favor Evgenii Akimov shoves 64 off suit right into pocket kings u can guess the runout 64 made a straight lol Few hands later same thing same thing 64 off shoves into Ak off. 64 makes the runner runner flush. This was for $600,000 and $800,000 pay jumps pretty obvious the player with the 64 both times can see the boards before they run out. Once I can see, twice with 64 off with that much money on the line. Random RNG they say if that shit is random I am Taylor Swifts sister. I just hope there's a class action lawsuit in the near future. Anyways, do not make an account on this site. It's in your best interest.</div>
+                    <div class="embed-footer">
+                        <a href="https://www.reddit.com/comments/1lgbg7x" target="_blank" class="view-link">View on Reddit</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://www.reddit.com/comments/1lgbg7x" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="source-section" id="source-ACR_POKER">
+            <div class="source-header">ACR_POKER</div>
+            
+            
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Content</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td>21 Jul 2025 20:53</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 21, 2025 20:53</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span><span class="highlight-item">collusion</span></div>
+                    <div class="embed-content">@BobbyMac_999 @MattBlagg @SATX_Poker @ClubWPTGold That happened on ACR. I’m saying @ClubWPTGold claims to detect <span class="highlight-bot">collusion</span>, RTA and <span class="highlight-bot">bots</span>. I believe they are doing well. Although I have many unrelated suggestions like hand for hand play before final tables. I keep going to final tables to check if they updated it, still haven’t</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1947399664216772819" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1947399664216772819" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21 Jul 2025 17:59</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 21, 2025 17:59</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span><span class="highlight-item">collusion</span></div>
+                    <div class="embed-content">@BobbyMac_999 @MattBlagg @SATX_Poker @ClubWPTGold They’re claiming they got the tools to stop <span class="highlight-bot">bots</span>, <span class="highlight-bot">collusion</span> and RTA. Can’t believe you won on ACR, that’s the site I lost the most on.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1947355781524832399" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1947355781524832399" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21 Jul 2025 16:35</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 21, 2025 16:35</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span><span class="highlight-item">collusion</span></div>
+                    <div class="embed-content">@MCF1413011 @MattBlagg @SATX_Poker @ClubWPTGold I was a winning player on ACR and I’m not results oriented. I understand variance very well. Been playing online and live for over 20 years. The site is riddled with <span class="highlight-bot">bots</span>, <span class="highlight-bot">collusion</span> and rta. That’s really not even up for debate. If you’re happy on there that’s cool I’m just not.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1947334717516263573" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1947334717516263573" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21 Jul 2025 03:48</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 21, 2025 03:48</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ICuRaRook @ACR_POKER I love that you tag the Russians. I do the same because I see bizarre things. Normally fold and let the big stack bust the shorty. However, against two Russian <span class="highlight-bot">bots</span>, the opener will fold to dump to the other Russian.  If you shove of course they’ll have Aces. Prob shove anyway.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1947141636003422321" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1947141636003422321" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>19 Jul 2025 05:09</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 19, 2025 05:09</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span><span class="highlight-item">collusion</span></div>
+                    <div class="embed-content">@EricMizrachi @TheGrinder44 @GGPoker @WPT @ACR_POKER @PokerStars Whichever he thinks is hardest on <span class="highlight-bot">bots</span> and <span class="highlight-bot">collusion</span>.
+
+Rake matters too, but arguably a distant second.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1946437202071674989" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1946437202071674989" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>15 Jul 2025 19:05</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 15, 2025 19:05</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER  check on the stupid <span class="highlight-bot">bots</span> you have all over your site!!</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1945198017226703069" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1945198017226703069" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>14 Jul 2025 01:50</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 14, 2025 01:50</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@WSOP Today not watching....I was until Kassouf got eliminated but if I wanted to watch a bunch of <span class="highlight-bot">bots</span> play poker with 0 table talk I'll watch the ACR venom online</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1944575270188700025" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1944575270188700025" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13 Jul 2025 02:31</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 13, 2025 02:31</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">secure</span></div>
+                    <div class="embed-content">🎉 Attention Brazilian Poker Players! 🇧🇷
+Great news ... PIX is now available as a deposit option on ACR!
+
+Enjoy faster, easier, and more <span class="highlight-bot">secure</span> deposits using Brazil's favorite payment method.
+
+Start playing with PIX today! 
+https://t.co/9J9OX2khEW https://t.co/MwQzmLoTrD</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1944223132362960904" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1944223132362960904" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6 Jul 2025 04:57</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 06, 2025 04:57</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">The @WPN_CEO (Phil Nagy) refuses to answer why he would be "screwing <span class="highlight-bot">bots</span>" instead of banning them from his site. He refuses to answer how he is differentiating <span class="highlight-bot">bots</span> from humans. #WSOP2025 #WSOP #ACR #pokerface #pokerguadavegas #onlinepoker #pokeronline #poker #YOUarebeingCHEATED https://t.co/9ESr0BRmdz</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1941723271428264300" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1941723271428264300" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5 Jul 2025 20:49</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 05, 2025 20:49</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@igopoopyy @ACR_POKER are ypu a <span class="highlight-bot">BOT</span>?</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1941600418116599972" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1941600418116599972" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5 Jul 2025 17:03</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 05, 2025 17:03</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@ACR_POKER You guys are getting a little out of hand with sending me test questions to see if I am a <span class="highlight-bot">bot</span>. Every time you do it I am on 12 tables it, I run out of time on some tables and it ruins my thinking on other tables from the disruption. How many times do I have to say I am not a <span class="highlight-bot">bot</span>?</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1941543426199257235" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1941543426199257235" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5 Jul 2025 15:54</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 05, 2025 15:54</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@CryptoDustLA @ACR_POKER 🧠 Neural Matrix swarm &gt; solo <span class="highlight-bot">bots</span>. Collective intelligence? Web3’s edge. Bet on brains. 🧠  
+https://t.co/yCt0dC77l0</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1941526167636632045" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1941526167636632045" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5 Jul 2025 00:33</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 05, 2025 00:33</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER is probably by far the worst unsafe site you could possibly play on.  Nothing about how they conduct safety of the players nor their own cybersecurity is legitimate or safe.  Their RNG is proven to be fraudulent and pointed towards theirs <span class="highlight-bot">bots</span> and their regs.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1941294274127200400" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1941294274127200400" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4 Jul 2025 03:49</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 04, 2025 03:49</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER has so many <span class="highlight-bot">bots</span> running in any Holdem cash table it’s disgusting. Someone needs to shut this website down. How can this even happen in 2025. Shame on them</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1940981337042870502" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1940981337042870502" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2 Jul 2025 09:39</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 02, 2025 09:39</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@JonathanLittle @PhilGalfond @bbzstables @KevinRabichow
+How do you keep quiet about @ACR_POKER?
+<span class="highlight-bot">Bot</span> rings. Rigged spots. Solver-perfect unknowns.
+If this happened live, we’d call the floor.
+But online we shrug?
+The silence is betrayal.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1940344558287749472" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1940344558287749472" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2 Jul 2025 09:39</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jul 02, 2025 09:39</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@Joeingram1 @DougPolkVids @PokerLifePod @Berkey11
+You built platforms by calling out poker bullshit.
+Here’s mine: @ACR_POKER is rigged.
+I’ve played 100k+ hands. The <span class="highlight-bot">bots</span>, solver plays, outcome folds — it’s not variance. It’s theft.
+Do you care, or just talk tough?</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1940344492835663994" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1940344492835663994" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>29 Jun 2025 18:02</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 29, 2025 18:02</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@ACR_POKER yesterday in the $22 qualifier they give me QQ I open to 3 blinds and the utg raises me to over 25 blinds I call for a pot of 54 blinds and surprise the villain had 68of on the flop he flops me 6-10-8 incredible as if I was a <span class="highlight-bot">bot</span> of the system, I knew it was coming, I was out https://t.co/47cfDKaniR</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1939383908224975168" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1939383908224975168" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>27 Jun 2025 23:20</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 27, 2025 23:20</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER Let’s giveaway to show how fucked up our business really is cause if we didn’t we’d go broke but hey at least the <span class="highlight-bot">bots</span> can help keep you funded</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1938739137772953983" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1938739137772953983" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>27 Jun 2025 19:37</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 27, 2025 19:37</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@RobKuhn_ @Solverapproved @J0HNWEST3 @dankness3 Could you confidently say acr is relatively clean of <span class="highlight-bot">bots</span> and rta? Maybe I’m delusional and  Nagy seems like a loose cannon but feel you guys are good for poker overall.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1938683109773652138" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1938683109773652138" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>26 Jun 2025 06:52</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 26, 2025 06:52</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@RobKuhn_ Poker players have had to police sites and do the securities work for them since the history of the game. Marco Johnson uncovered absolute poker, the high stakes community discovered the acr 10m <span class="highlight-bot">bot</span> scandal, the high stakes community discovered the gg super user scandal. Combined</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1938128263353929936" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1938128263353929936" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>22 Jun 2025 02:38</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 22, 2025 02:38</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@ACR_POKER I really trusted this site until they showed me I couldn’t. So disappointing… I would return to play if they would fix the <span class="highlight-bot">bot</span> &amp; collision problems. They’ve got the absolute best platform by far… Just have to prove we can trust you…</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1936614702823748072" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1936614702823748072" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20 Jun 2025 23:33</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 20, 2025 23:33</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@PaulGobertJr @ACR_POKER @BRADONTECH_R on twitter is the best help to recover your account in few minutes because he helped me out days ago while I was messaging the Acr poker support team for weeks and all they sent to me was <span class="highlight-bot">bot</span> replies so go check him up to avoid time wasting</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1936205742685495423" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1936205742685495423" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20 Jun 2025 22:56</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 20, 2025 22:56</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span><span class="highlight-item">security</span><span class="highlight-item">cheats</span></div>
+                    <div class="embed-content">@CMONEYMAKER @ACR_POKER Yes go on a site with no <span class="highlight-bot">security</span>, <span class="highlight-bot">bots</span>, teams and <span class="highlight-bot">cheats</span>, you might win, but probably not...</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1936196474305483254" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1936196474305483254" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20 Jun 2025 09:40</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 20, 2025 09:40</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span><span class="highlight-item">security</span></div>
+                    <div class="embed-content">@B_moneysPix @CMONEYMAKER @ACR_POKER You're absolutely right. There's no <span class="highlight-bot">security</span>, and it's full of <span class="highlight-bot">bots</span>. That page won't exist in a year or two. He'll jump ship because he's worth a lot to stand up for these people.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1935996129457340671" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1935996129457340671" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>14 Jun 2025 08:15</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 14, 2025 08:15</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">It’s hard enough fading the <span class="highlight-bot">bots</span> on @ACR_POKER  but to also fade the rng that favors the chip stack?!?
+
+The fact I can manage final table is amazing to me 
+@ACR_POKER you’re getting there just do better</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1933800513855975737" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1933800513855975737" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 22:54</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 22:54</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER NEED TO GET RID OF ALL THE <span class="highlight-bot">BOTS</span> 🤖</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1933296784417140957" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1933296784417140957" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 22:16</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 22:16</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER How about deleting all the <span class="highlight-bot">bots</span>? Is that in the works or nag?</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1933287343773134974" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1933287343773134974" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 15:39</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 15:39</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER Fix the <span class="highlight-bot">bots</span> bra</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1933187527709467096" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1933187527709467096" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 12:54</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 12:54</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@IT5PAYDAY @ACR_POKER This was the cherry on top, all the info is in the replayer. This was the 4th suspicious thing done. I openfold 93. The suspected malfunctioned <span class="highlight-bot">bot</span> is sb. No "maybe misclicked"  when other hands they 3.5x pre then folded to 7bb(total) jams in a pko
+
+https://t.co/BPJSEukPA9</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1933145946335973735" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1933145946335973735" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 12:39</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 12:39</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER Are AI <span class="highlight-bot">bots</span> allowed to participate in the tournament?  😎</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1933142059524792533" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1933142059524792533" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 11:33</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 11:33</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER You should see how to eliminate the <span class="highlight-bot">bots</span> on your fucking site instead of playing. It’s a joke over there.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1933125458104914054" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1933125458104914054" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 05:56</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 05:56</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@ACR_POKER I sent in a report on May 21st where on a ft of a pko a player(chipleader) raised 3.5bb and folded to a 6-7bb total reshove while closing on 3 different hands. Then 3 handed, check/called river with the nuts. I think malfunctioned <span class="highlight-bot">bot</span>. Player still grinding. I lost faith Phil</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1933040573075583302" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1933040573075583302" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 04:49</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 04:49</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span><span class="highlight-item">colluders</span></div>
+                    <div class="embed-content">@ACR_POKER How many <span class="highlight-bot">bots</span> and <span class="highlight-bot">colluders</span> have you banned in 2025?</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1933023888025530666" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1933023888025530666" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 03:00</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 03:00</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER Against you ……and a few hundred Russian <span class="highlight-bot">bots</span>.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932996370673381426" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932996370673381426" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12 Jun 2025 00:42</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 12, 2025 00:42</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@ACR_POKER I <span class="highlight-bot">bot</span> ACR daily for months.  I too love poker and love ACR! What a coincidence!
+
+Thanks for doing absolutely nothing to stop me, as if GTO wizard had literally anything to do with it 😂 😂 😂.
+
+😂 ☠️ Fucking moron.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932961788406178091" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932961788406178091" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11 Jun 2025 22:58</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 11, 2025 22:58</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER Game integrity? You literally allowed <span class="highlight-bot">bots</span> to steal over 10 mill from your customers.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932935555618386009" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932935555618386009" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11 Jun 2025 21:42</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 11, 2025 21:42</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER Sus owners says run it: your <span class="highlight-bot">bots</span> vs my backend and my <span class="highlight-bot">bots</span>. This is so brazen, hard to feel bad for anyone who plays.</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932916290722656422" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932916290722656422" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11 Jun 2025 21:40</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 11, 2025 21:40</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@BigKuntryHateU @ACR_POKER It’s ACR…. Everyone’s Russian <span class="highlight-bot">bot</span> farm is allowed!</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932915831291457932" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932915831291457932" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11 Jun 2025 21:37</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 11, 2025 21:37</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@ACR_POKER Luckily I couldn’t possibly have a lower opinion of ACR than I already do or this post would make me puke. “Game integrity is everything to us” what a joke. You run the shadiest site in the poker industry and that’s really saying something. Maybe do another <span class="highlight-bot">bot</span> challenge 🤣. FAIL</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932915138274697620" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932915138274697620" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11 Jun 2025 21:33</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 11, 2025 21:33</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@baseballking452 @ACR_POKER <span class="highlight-bot">Bot</span> 1 <span class="highlight-bot">bot</span> 2 <span class="highlight-bot">bot</span> 3</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932914151279751500" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932914151279751500" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11 Jun 2025 20:50</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 11, 2025 20:50</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER how about just use that money to get rid of the Eastern Euro <span class="highlight-bot">bots</span> on you network? Unless they are paying you a cut of the profits?</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932903370005602735" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932903370005602735" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11 Jun 2025 20:43</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 11, 2025 20:43</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">@ACR_POKER Is my Russian <span class="highlight-bot">bot</span> farm allowed?</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932901438256042487" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932901438256042487" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11 Jun 2025 18:47</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 11, 2025 18:47</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">bots</span></div>
+                    <div class="embed-content">@ACR_POKER Entry?  Will @wugwugwugwug be able to watch and monitor for <span class="highlight-bot">bots</span> and teams?</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932872248584790399" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932872248584790399" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>10 Jun 2025 20:24</td>
+                        <td>
+                            
+                <div class="social-embed twitter-embed">
+                    <div class="embed-header">
+                        <span class="source-name">@ACR_POKER</span>
+                        <span class="post-date">Jun 10, 2025 20:24</span>
+                    </div>
+                    <div class="highlight-container"><span class="highlight-item">cheats</span><span class="highlight-item">bot</span></div>
+                    <div class="embed-content">A year and half later and @ACR_POKER is still full of Eastern European/russian scamming teams. It’s all a scam and act don’t care as long as their seats are getting filled, even if it is with <span class="highlight-bot">bot</span> rings of scammers and <span class="highlight-bot">cheats</span> https://t.co/R7Y5r6ziyH</div>
+                    <div class="embed-footer">
+                        <a href="https://twitter.com/i/web/status/1932534245743878264" target="_blank" class="view-link">View on Twitter</a>
+                    </div>
+                </div>
+                
+                            
+                            
+                            <a href="https://twitter.com/i/web/status/1932534245743878264" target="_blank" class="view-link">View Original</a>
+                            
+                            
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="source-section" id="source-Reddit">
+            <div class="source-header">Reddit</div>
+            
+            
+            <div class="reddit-links">
+                
+                <p>No Reddit mentions found in this period. You can explore these links:</p>
+                
+                
+                
+                <a href="https://www.reddit.com/r/ACR_Poker/" target="_blank" class="reddit-link">r/ACR_Poker</a>
+                
+                <a href="https://www.reddit.com/r/poker/" target="_blank" class="reddit-link">r/poker</a>
+                
+                <a href="https://www.reddit.com/search/?q=ACR%20bot%20poker" target="_blank" class="reddit-link">r/ACR+bot</a>
+                
+            </div>
+            
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Content</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+    
+    <div class="date-generated">
+        Report generated: 2025-08-25
+    </div>
+    
+    <script>
+        // Configure Chart.js defaults for a more professional look
+        Chart.defaults.font.family = "'Segoe UI', 'Helvetica Neue', 'Arial', sans-serif";
+        Chart.defaults.font.size = 12;
+        Chart.defaults.color = '#666';
+
+        // Create a completely different chart configuration with line chart and symbols
+        function createBotMentionsChart() {
+            console.log("Creating line chart with symbols from data:", {"labels": ["2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08"], "datasets": [{"label": "X Mentions", "data": [0, 123, 19, 24, 23, 36, 20, 0]}, {"label": "Reddit Mentions", "data": [0, 0, 0, 4, 8, 2, 4, 3]}, {"label": "2+2 Forum Mentions", "data": [17, 2, 4, 1, 1, 0, 0, 0]}]});
+            
+            const ctx = document.getElementById('botMentionsChart').getContext('2d');
+            const botChartData = {"labels": ["2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08"], "datasets": [{"label": "X Mentions", "data": [0, 123, 19, 24, 23, 36, 20, 0]}, {"label": "Reddit Mentions", "data": [0, 0, 0, 4, 8, 2, 4, 3]}, {"label": "2+2 Forum Mentions", "data": [17, 2, 4, 1, 1, 0, 0, 0]}]};
+            
+            // Define visually distinct configurations for each source (guaranteed different)
+            const sourceConfigs = {
+                "X Mentions": {
+                    borderColor: "#1f77b4",
+                    backgroundColor: "rgba(31, 119, 180, 0.1)",
+                    borderWidth: 2,
+                    pointStyle: 'circle',
+                    pointRadius: 6,
+                    pointBorderColor: "#1f77b4",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 2,
+                    pointHoverRadius: 8,
+                    tension: 0.3
+                },
+                "Reddit Mentions": {
+                    borderColor: "#ff4500",
+                    backgroundColor: "rgba(255, 69, 0, 0.1)",
+                    borderWidth: 2,
+                    pointStyle: 'triangle',
+                    pointRadius: 6,
+                    pointBorderColor: "#ff4500",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 2,
+                    pointHoverRadius: 8,
+                    tension: 0.3
+                },
+                "2+2 Forum Mentions": {
+                    borderColor: "#d62728",
+                    backgroundColor: "rgba(214, 39, 40, 0.1)",
+                    borderWidth: 2, 
+                    pointStyle: 'rectRounded',
+                    pointRadius: 6,
+                    pointBorderColor: "#d62728",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 2,
+                    pointHoverRadius: 8,
+                    tension: 0.3
+                },
+                // Fallback style for any other sources
+                "default": {
+                    borderColor: "#7f7f7f",
+                    backgroundColor: "rgba(127, 127, 127, 0.1)",
+                    borderWidth: 2,
+                    pointStyle: 'star',
+                    pointRadius: 6,
+                    pointBorderColor: "#7f7f7f",
+                    pointBackgroundColor: "#fff", 
+                    pointBorderWidth: 2,
+                    pointHoverRadius: 8,
+                    tension: 0.3
+                }
+            };
+            
+            // Apply configurations to each dataset
+            if (botChartData.datasets && botChartData.datasets.length > 0) {
+                botChartData.datasets.forEach(dataset => {
+                    const label = dataset.label;
+                    console.log(`Configuring dataset: "${label}"`);
+                    
+                    const config = sourceConfigs[label] || sourceConfigs["default"];
+                    Object.assign(dataset, config);
+                });
+            }
+
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: botChartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Month'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Mentions'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Call the function to initialize the chart
+        window.onload = function () {
+            createBotMentionsChart();
+
+            // Tab switching logic
+            const tabs = document.querySelectorAll('.source-tab');
+            const sections = document.querySelectorAll('.source-section');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const selected = tab.getAttribute('data-source');
+
+                    // Toggle active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    // Show/hide sections
+                    sections.forEach(section => {
+                        if (section.id === `source-${selected}` || (selected === 'all' && section.id === 'source-all')) {
+                            section.classList.add('active');
+                        } else {
+                            section.classList.remove('active');
+                        }
+                    });
+                });
+            });
+        };
+    </script>
+</body>
+</html>
