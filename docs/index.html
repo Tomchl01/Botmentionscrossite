@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot & Security Mentions Report - 2025-10-30</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .post-card {
+            background: #f9f9f9;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+        }
+        
+        .post-card.bot-related {
+            border-left-color: #e74c3c;
+            background: #fff5f5;
+        }
+        
+        .post-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .post-source {
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .post-content {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .keyword-highlight {
+            background: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        
+        .post-link {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        
+        .post-link:hover {
+            text-decoration: underline;
+        }
+        
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        canvas {
+            max-height: 300px !important;
+        }
+        
+        .ai-summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .ai-summary-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .footer {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            background: #667eea;
+            color: white;
+        }
+        
+        .badge.reddit { background: #ff4500; }
+        .badge.twitter { background: #1da1f2; }
+        .badge.forum { background: #2ecc71; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛡️ Bot & Security Mentions Report</h1>
+            <p class="subtitle">
+                Monitoring ACR Poker mentions across Reddit, Twitter/X, and Forums
+                <br>
+                Generated: 2025-10-30 | Rolling 15-day window
+            </p>
+        </header>
+        
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">1</div>
+                <div class="stat-label">Total Posts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1</div>
+                <div class="stat-label">Bot-Related</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100.0%</div>
+                <div class="stat-label">Bot Mention Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1</div>
+                <div class="stat-label">Sources Monitored</div>
+            </div>
+        </div>
+        
+        <!-- AI Summary (if enabled) -->
+        
+        
+        <!-- Bot Trends Chart -->
+        <div class="section">
+            <h2 class="section-title">📈 Bot Mention Trends (Last 15 Days)</h2>
+            <div class="chart-container">
+                <canvas id="botTrendsChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Recent Bot-Related Posts -->
+        <div class="section">
+            <h2 class="section-title">🚨 Recent Bot & Security Mentions</h2>
+            
+                <p>No bot-related mentions found in the current period.</p>
+            
+        </div>
+        
+        <!-- All Recent Posts -->
+        <div class="section">
+            <h2 class="section-title">📝 All Recent Mentions</h2>
+            
+                
+                <div class="post-card bot-related">
+                    <div class="post-meta">
+                        <span class="badge reddit">Reddit</span>
+                        <span class="post-source">r/poker</span>
+                        <span>Round_Interaction459</span>
+                        <span>2025-10-26 05:48:52</span>
+                    </div>
+                    <div class="post-content">
+                        Won a free ticket to the $2,650 Venom today on ACR. I'm gonna use it for the $5 mil guaranteed PKO. There are two other smaller-garauntee tournaments I could use it for, but I think the PKO is my best shot, especially since I got in for free and a single knockout would give me at least a couple hundred bucks. Not gonna late reg because I want to maximize my chances of getting bounties. Does anyone have any advice/ experience/ issues they'd like to share that might be useful? I'm a decent MTT player, but this will be the biggest tournament I've ever played. I got the ticket from one of the free "Venom Vault" tickets the site gives you, most of which are worth $0.80. I got super lucky, needless to say. I've heard there have been issues with <span class="highlight-bot">bot</span>s in the past. Has that been corrected? How tough is the field? Any advice is much appreciated.
+                    </div>
+                    
+                    <a href="https://www.reddit.com/comments/1ogcvtt" target="_blank" class="post-link">View original →</a>
+                    
+                </div>
+                
+            
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>
+                Generated by OneScraperForALL v2.0 (Simplified) | 
+                Data retention: 15 days | 
+                Total stored: 1 posts
+            </p>
+            <p>Sources: </p>
+        </div>
+    </div>
+    
+    <script>
+        // Bot Trends Chart
+        const ctx = document.getElementById('botTrendsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["2025-10"],
+                datasets: [{"label": "Reddit Mentions", "data": [1]}]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    title: {
+                        display: false
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
